@@ -1,63 +1,77 @@
 <template lang="pug">
   .container
-    div
-      logo
-      h1.title sample-app
-      .links
-        a(href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green") Documentation
-        a(href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey") GitHub
+    .initial(v-if="!isSubWindow")
+      main-header
+      el-form(ref="form" :model="form" :rules="rules")
+        el-form-item(label="報告者一覧（カンマ区切り）" prop="reportersString")
+          el-input(v-model="form.reportersString" placeholder="伊藤,佐藤,田中")
+      p.description ボタンを押してタイマーを表示します。
+      p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
+      el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
+    .content(v-else)
+      p test
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component
-export default class Index extends Vue {}
+export default class Index extends Vue {
+  form: any = {
+    reportersString: '伊藤,佐藤,田中'
+  };
+
+  rules: Object = {
+    reportersString: [{ required: true, message: '報告者一覧を入力してください', trigger: 'blur' }]
+  };
+
+  get rootPath(): string {
+    return process.env.ROOT_PATH || '';
+  }
+
+  get isSubWindow(): boolean {
+    return Boolean(this.$route.query.subwindow);
+  }
+
+  get reporters(): Array<String> {
+    return this.form.reportersString.split(',');
+  }
+
+  mounted() {
+    // if(!this.isSubWindow) return;
+  }
+
+  showTimer() {
+    (this.$refs.form as any).validate((valid: boolean) => {
+      if(valid) {
+        window.open(`${this.rootPath}?subwindow=true`,
+          'WeeklyReportOrganazer',
+          'width=300,height=200,scrollbars=yes,resizable=yes');
+      }
+    });
+  }
+}
 </script>
 
-<style>
+<style lang="scss">
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+  .initial {
+    padding: 20px;
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
+    .description {
+      margin-top: 30px;
+      font-size: 14px;
+    }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
+    .note {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #e72e2e;
+    }
 
-.links {
-  padding-top: 15px;
+    .start-button {
+      margin-top: 30px;
+    }
+  }
 }
 </style>

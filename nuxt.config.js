@@ -1,3 +1,4 @@
+const envSet = require(`./environments/env.${process.env.NODE_ENV || 'development'}.js`);
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -74,5 +75,7 @@ export default {
           exclude: /(node_modules)/
         })
       }
-    }}
+    }
+  },
+  env: envSet
 }
