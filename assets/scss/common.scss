@@ -1,0 +1,43 @@
+html {
+    font-size: 62.5%;
+  
+    &.wf-loading {
+      visibility: hidden;
+    }
+  
+    &.wf-active {
+      visibility: visible;
+    }
+  }
+  
+  body {
+    font-family: fot-klee-pro, fot-tsukuardgothic-std, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+  }
+  
+  .page-enter-active, .page-leave-active {
+    transition: opacity 0.1s
+  }
+  
+  .page-enter, .page-leave-active {
+    opacity: 0
+  }
+  
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+  
+  .layout-enter-active,
+  .layout-leave-active {
+    transition: opacity 0.08s;
+  }
+  
+  .layout-enter,
+  .layout-leave-active {
+    opacity: 0;
+  }
+  
