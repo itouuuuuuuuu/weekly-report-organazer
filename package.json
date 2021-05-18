@@ -34,6 +34,7 @@
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "sass": "^1.32.13",
-    "sass-loader": "^10.2.0"
+    "sass-loader": "^10.2.0",
+    "vuex-module-decorators": "^1.0.1"
   }
 }

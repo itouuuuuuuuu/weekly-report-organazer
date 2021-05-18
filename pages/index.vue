@@ -4,7 +4,7 @@
       main-header
       el-form(ref="form" :model="form" :rules="rules")
         el-form-item(label="報告者一覧（カンマ区切り）" prop="reportersString")
-          el-input(v-model="form.reportersString" placeholder="伊藤,佐藤,田中")
+          el-input(v-model="form.reportersString" @blur="setReporters" placeholder="伊藤,佐藤,田中")
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
       el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import { reportersStore } from '@/store';
 
 @Component
 export default class Index extends Vue {
@@ -49,6 +50,11 @@ export default class Index extends Vue {
           'width=300,height=200,scrollbars=yes,resizable=yes');
       }
     });
+  }
+
+  setReporters() {
+    console.log('setReporters');
+    reportersStore.setReporters(this.reporters);
   }
 }
 </script>
