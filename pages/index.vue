@@ -2,9 +2,17 @@
   .container
     .initial(v-if="!isSubWindow")
       main-header
-      el-form(ref="form" :model="form" :rules="rules")
+      el-form(label-position="top" ref="form" :model="form" :rules="rules")
         el-form-item(label="報告者一覧（カンマ区切り）" prop="reporterStringNames")
-          el-input(v-model="form.reporterStringNames" @blur="setReporters" placeholder="伊藤,佐藤,田中")
+          el-input(v-model="form.reporterStringNames" size="small" @blur="setReporters" placeholder="伊藤,佐藤,田中")
+        el-form-item.required(label="初期設定時間")
+          .timer-setting
+            el-form-item(prop="min")
+              el-input-number(v-model="form.min" controls-position="right" size="small" :min="0" :max="59")
+            span.unit 分
+            el-form-item(prop="sec")
+              el-input-number(v-model="form.sec" controls-position="right" size="small" :min="0" :max="59")
+            span.unit 秒
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
       el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
@@ -19,11 +27,15 @@ import { reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '伊藤,佐藤,田中'
+    reporterStringNames: '伊藤,佐藤,田中',
+    min: '3',
+    sec: ''
   };
 
   rules: Object = {
-    reporterStringNames: [{ required: true, message: '報告者一覧を入力してください', trigger: 'blur' }]
+    reporterStringNames: [{ required: true, message: '報告者一覧を入力してください', trigger: 'blur' }],
+    min: [{ required: true, message: '分を入力してください', trigger: 'change' }],
+    sec: [{ required: true, message: '秒を入力してください', trigger: 'change' }]
   };
 
   get rootPath(): string {
@@ -44,11 +56,6 @@ export default class Index extends Vue {
 
   get reporterNames(): Array<String> {
     return reportersStore.reporterNames;
-  }
-
-  mounted() {
-    // if(!this.isSubWindow) {
-    // }
   }
 
   showTimer() {
@@ -82,6 +89,20 @@ export default class Index extends Vue {
   .initial {
     padding: 20px;
 
+    .el-form-item__label {
+      padding: 0;
+      height: 30px;
+    }
+
+    .timer-setting {
+      display: flex;
+      align-items: center;
+
+      .unit {
+        padding: 0 15px 0 5px;
+      }
+    }
+
     .description {
       margin-top: 30px;
       font-size: 14px;
@@ -105,6 +126,12 @@ export default class Index extends Vue {
       max-width: 200px;
       width: 15%;
     }
+  }
+
+  .required .el-form-item__label:before  {
+    content: "*";
+    color: #f56c6c;
+    margin-right: 4px;
   }
 }
 </style>
