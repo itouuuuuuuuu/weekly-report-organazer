@@ -3,13 +3,13 @@
     .initial(v-if="!isSubWindow")
       main-header
       el-form(ref="form" :model="form" :rules="rules")
-        el-form-item(label="報告者一覧（カンマ区切り）" prop="reporterNamesString")
-          el-input(v-model="form.reporterNamesString" @blur="setReporters" placeholder="伊藤,佐藤,田中")
+        el-form-item(label="報告者一覧（カンマ区切り）" prop="reporterStringNames")
+          el-input(v-model="form.reporterStringNames" @blur="setReporters" placeholder="伊藤,佐藤,田中")
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
       el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
     .content(v-else)
-      p {{ reporterNames }}
+      reporters-list(:names="reporterNames")
 </template>
 
 <script lang="ts">
@@ -19,11 +19,11 @@ import { reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterNamesString: '伊藤,佐藤,田中'
+    reporterStringNames: '伊藤,佐藤,田中'
   };
 
   rules: Object = {
-    reporterNamesString: [{ required: true, message: '報告者一覧を入力してください', trigger: 'blur' }]
+    reporterStringNames: [{ required: true, message: '報告者一覧を入力してください', trigger: 'blur' }]
   };
 
   get rootPath(): string {
@@ -34,8 +34,8 @@ export default class Index extends Vue {
     return Boolean(this.$route.query.subwindow);
   }
 
-  get inputReporters(): Array<String> {
-    return this.form.reporterNamesString.split(',');
+  get inputedReporterNames(): Array<String> {
+    return this.form.reporterStringNames.split(',');
   }
 
   get hasReporters(): boolean {
@@ -57,19 +57,19 @@ export default class Index extends Vue {
         this.setReporters();
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=300,height=200,scrollbars=yes,resizable=yes');
+          'width=400,height=250,scrollbars=yes,resizable=yes');
       }
     });
   }
 
   setReporters() {
-    reportersStore.setReporters(this.inputReporters);
+    reportersStore.setReporters(this.inputedReporterNames);
   }
 
   @Watch('hasReporters')
   setNamesToForm(val: boolean) {
     if(val) {
-      this.form.reporterNamesString = reportersStore.namesString;
+      this.form.reporterStringNames = reportersStore.reporterStringNames;
     } else {
       this.$message.error('入力項目に誤りがあります');
     }
@@ -95,6 +95,15 @@ export default class Index extends Vue {
 
     .start-button {
       margin-top: 30px;
+    }
+  }
+
+  .content {
+
+    .reporters-list {
+      min-width: 120px;
+      max-width: 200px;
+      width: 15%;
     }
   }
 }

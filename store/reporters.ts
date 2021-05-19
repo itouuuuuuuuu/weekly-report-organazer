@@ -13,7 +13,7 @@ export default class Reporters extends VuexModule {
     return this.names.length > 0;
   }
 
-  public get namesString(): String {
+  public get reporterStringNames(): String {
     return this.names.join(',');
   }
 
