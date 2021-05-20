@@ -5,10 +5,12 @@
     .row
       el-button.min-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(600)") 10分
       el-button.min-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(60)") 1分
+    .row
       el-button.sec-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(10)") 10秒
       el-button.sec-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(1)") 1秒
     .row
-      el-button.reset(type="danger" size="small" plain round :disabled="starting" @click="reset") リセット
+      el-button.reset(type="danger" plain round :disabled="starting" @click="reset") リセット
+    .row
       el-button.toggle-start(type="primary" round :icon="toggleStartIcon" @click="toggleStart" :disabled="finished") {{ toggleStartText }}
 </template>
 
@@ -99,10 +101,12 @@ export default class Timer extends Vue {
 
 <style lang="scss">
 .timer {
+  width: 100%;
+  padding: 0 10px;
 
   .display {
     text-align: center;
-    font-size: 60px;
+    font-size: 50px;
     color: #555;
     margin-bottom: 20px;
   }
@@ -115,7 +119,7 @@ export default class Timer extends Vue {
       margin-bottom: 10px;
     }
 
-    .reset, .toggle-start {
+    .el-button {
       width: 100%;
     }
   }

@@ -105,16 +105,16 @@ export default class ReportersList extends Vue {
 
     li {
       border: 1px solid #f3f3f3;
-      margin: 0 5px 5px;
-      font-size: 13px;
-      padding: 5px 7px;
+      margin: 0 4px 4px;
+      font-size: 12px;
+      padding: 3px 7px;
       border-radius: 4px;
       background-color: #fff;
-      filter: drop-shadow(2px 2px 4px #00000023);
+      filter: drop-shadow(1px 1px 3px #00000023);
       cursor: pointer;
 
       &:hover {
-        filter: drop-shadow(2px 2px 4px #00000062);
+        filter: drop-shadow(1px 1px 3px #00000062);
       }
     }
   }

@@ -31,7 +31,7 @@ import { timersStore, reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '高橋,古澤(201904),伊藤(202105),平川(201708),森田(201903),光吉(202004),笹木,金谷,田村,武田,井手',
+    reporterStringNames: '高橋,平川,武田,井手,笹木,森田,古澤,田村,光吉,金谷,伊藤',
     min: 3,
     sec: 0
   };
@@ -99,7 +99,7 @@ export default class Index extends Vue {
         this.setReporters();
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=370,height=225,scrollbars=yes,resizable=yes');
+          'width=270,height=330,scrollbars=yes,resizable=yes');
       }
     });
   }
@@ -175,7 +175,7 @@ export default class Index extends Vue {
   }
 
   .content {
-    max-width: 370px;
+    max-width: 270px;
     display: flex;
 
     .reporters-list {
@@ -185,11 +185,13 @@ export default class Index extends Vue {
     }
 
     .timer-container {
+      width: 100%;
       margin: 0 auto;
 
       .current-reporter {
         text-align: center;
         margin: 15px 0 10px;
+        font-size: 14px;
       }
     }
   }
