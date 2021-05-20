@@ -39,6 +39,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/lodash.js',
+    '@/plugins/utils',
     { src: "@/plugins/persistedstate.js", ssr: false }
   ],
 

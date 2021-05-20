@@ -1,11 +1,11 @@
 <template lang="pug">
-.reporters-list
+.reporters-list(v-if="names.length > 0")
   .header
     h2.title 報告者
     i.el-icon-refresh(@click="shuffle")
   .list
     transition-group(name="flip-list" tag="ul")
-      li(v-for="name in names" :key="name") {{ name }}
+      li(v-for="name in displayNames" :key="name") {{ name }}
 </template>
 
 <script lang="ts">
@@ -16,11 +16,14 @@ export default class ReportersList extends Vue {
   @Prop({ default: () => [], required: true })
   names?: Array<String>;
 
+  displayNames: Array<String> = [];
+
   shuffle() {
-    this.names = this.$_.shuffle(this.names);
+    this.displayNames = this.$_.shuffle(this.displayNames);
   }
 
   mounted() {
+    this.displayNames = this.$deepCopy(this.names);
     setTimeout(() => {
       this.shuffle();
     }, 500);

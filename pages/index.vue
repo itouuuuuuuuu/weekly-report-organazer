@@ -16,24 +16,24 @@
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
       el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
+      a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank") {{ appVersion }}
     .content(v-else)
-      reporters-list(:names="reporterNames")
+      reporters-list(:names.sync="reporterNames")
       .timer-container
         p.current-reporter A さんの番です
         timer
-
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
-import { reportersStore } from '@/store';
+import { timersStore, reportersStore } from '@/store';
 
 @Component
 export default class Index extends Vue {
   form: any = {
     reporterStringNames: '伊藤,佐藤,田中,aaa,bbb,ccc,ddd,eee,fff,ggg',
     min: '3',
-    sec: ''
+    sec: '0'
   };
 
   rules: Object = {
@@ -46,6 +46,10 @@ export default class Index extends Vue {
     return process.env.ROOT_PATH || '';
   }
 
+  get appVersion(): string {
+    return process.env.APP_VER || '';
+  }
+
   get isSubWindow(): boolean {
     return Boolean(this.$route.query.subwindow);
   }
@@ -55,6 +59,7 @@ export default class Index extends Vue {
   }
 
   get hasReporters(): boolean {
+    if(reportersStore?.hasReporters === undefined || reportersStore.hasReporters === null) return false;
     return reportersStore.hasReporters;
   }
 
@@ -65,10 +70,11 @@ export default class Index extends Vue {
   showTimer() {
     (this.$refs.form as any).validate((valid: boolean) => {
       if(valid) {
+        timersStore.setInitialTimerSec(this.form);
         this.setReporters();
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=365,height=230,scrollbars=yes,resizable=yes');
+          'width=370,height=225,scrollbars=yes,resizable=yes');
       }
     });
   }
@@ -90,6 +96,8 @@ export default class Index extends Vue {
 
 <style lang="scss">
 .container {
+  max-width: 370px;
+
   .initial {
     padding: 20px;
 
@@ -120,6 +128,13 @@ export default class Index extends Vue {
 
     .start-button {
       margin-top: 30px;
+    }
+
+    .version {
+      display: block;
+      margin-top: 40px;
+      color: #575757;
+      font-size: 12px;
     }
   }
 
