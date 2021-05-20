@@ -15,13 +15,13 @@
             span.unit 秒
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
-      el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
+      el-button.start-button(type="primary" round @click="showTimer" :disabled="hasNoTime") タイマーを表示する
       a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank") {{ appVersion }}
     .content(v-else)
-      reporters-list(:names.sync="reporterNames")
+      reporters-list(:names.sync="reporterNames" :current-reporter-index.sync="currentReporterIndex")
       .timer-container
-        p.current-reporter A さんの番です
-        timer
+        p.current-reporter(v-html="displayMessage")
+        timer(:current-reporter-index.sync="currentReporterIndex")
 </template>
 
 <script lang="ts">
@@ -31,9 +31,9 @@ import { timersStore, reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '伊藤,佐藤,田中,aaa,bbb,ccc,ddd,eee,fff,ggg',
-    min: '3',
-    sec: '0'
+    reporterStringNames: '高橋,古澤(201904),伊藤(202105),平川(201708),森田(201903),光吉(202004),笹木,金谷,田村,武田,井手',
+    min: 3,
+    sec: 0
   };
 
   rules: Object = {
@@ -42,16 +42,37 @@ export default class Index extends Vue {
     sec: [{ required: true, message: '秒を入力してください', trigger: 'change' }]
   };
 
-  get rootPath(): string {
+  currentReporterIndex: number = 0;
+  reporterNames: Array<String> = [];
+
+  get rootPath(): String {
     return process.env.ROOT_PATH || '';
   }
 
-  get appVersion(): string {
+  get appVersion(): String {
     return process.env.APP_VER || '';
   }
 
   get isSubWindow(): boolean {
     return Boolean(this.$route.query.subwindow);
+  }
+
+  get hasNoTime(): boolean {
+    return this.form.min === 0 && this.form.sec === 0;
+  }
+
+  get allReporterFinished(): boolean {
+    return this.currentReporterIndex > this.storedReporterNames.length - 1;
+  }
+
+  get displayMessage(): string {
+    if(this.allReporterFinished) {
+      return '全員の報告が完了しました';
+    }
+    if(this.currentReporterIndex === 0) {
+      return `<strong>${this.currentReporterName}</strong> さんの番です`;
+    }
+    return `次は <strong>${this.currentReporterName}</strong> さんの番です`;
   }
 
   get inputedReporterNames(): Array<String> {
@@ -63,7 +84,11 @@ export default class Index extends Vue {
     return reportersStore.hasReporters;
   }
 
-  get reporterNames(): Array<String> {
+  get currentReporterName(): String {
+    return this.reporterNames[this.currentReporterIndex];
+  }
+
+  get storedReporterNames() {
     return reportersStore.reporterNames;
   }
 
@@ -83,6 +108,18 @@ export default class Index extends Vue {
     reportersStore.setReporters(this.inputedReporterNames);
   }
 
+  @Watch('storedReporterNames')
+  setReporterNames(val: Array<String>) {
+    if(val.length > 0) {
+      this.reporterNames = val;
+    }
+  }
+
+  @Watch('starting')
+  test(val: boolean) {
+    console.log(val);
+  }
+
   @Watch('hasReporters')
   setNamesToForm(val: boolean) {
     if(val) {
@@ -96,7 +133,6 @@ export default class Index extends Vue {
 
 <style lang="scss">
 .container {
-  max-width: 370px;
 
   .initial {
     padding: 20px;
@@ -139,6 +175,7 @@ export default class Index extends Vue {
   }
 
   .content {
+    max-width: 370px;
     display: flex;
 
     .reporters-list {

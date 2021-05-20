@@ -1,29 +1,45 @@
 <template lang="pug">
-.reporters-list(v-if="names.length > 0")
+.reporters-list
   .header
     h2.title 報告者
-    i.el-icon-refresh(@click="shuffle")
+    i.el-icon-refresh(:class="{ disabled: starting }" @click="shuffle")
   .list
     transition-group(name="flip-list" tag="ul")
-      li(v-for="name in displayNames" :key="name") {{ name }}
+      li(v-for="(name, index) in displayNames" :key="name"
+        :class="{ disabled: starting, 'is-actice': isCurrentReporter(index) }"
+        @click="setReporterIndex(index)") {{ name }}
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, PropSync } from 'nuxt-property-decorator';
+import { timersStore } from '@/store';
 
 @Component
 export default class ReportersList extends Vue {
-  @Prop({ default: () => [], required: true })
-  names?: Array<String>;
+  @PropSync('names', { default: () => [], required: true })
+  displayNames!: Array<String>;
 
-  displayNames: Array<String> = [];
+  @PropSync('currentReporterIndex', { required: true })
+  reporterIndex!: number;
+
+  get starting(): boolean {
+    return timersStore.start;
+  }
 
   shuffle() {
+    this.reporterIndex = 0;
     this.displayNames = this.$_.shuffle(this.displayNames);
   }
 
+  setReporterIndex(index: number) {
+    this.reporterIndex = index;
+  }
+
+  isCurrentReporter(index: number) {
+    return this.reporterIndex === index;
+  }
+
   mounted() {
-    this.displayNames = this.$deepCopy(this.names);
     setTimeout(() => {
       this.shuffle();
     }, 500);
@@ -38,6 +54,16 @@ export default class ReportersList extends Vue {
   height: 100vh;
   overflow: scroll;
   color: #555;
+
+  .disabled {
+    pointer-events: none;
+    cursor: no-drop !important;
+    opacity: 0.7;
+  }
+
+  .is-actice {
+    font-weight: bold !important;
+  }
 
   .flip-list-move {
     transition: transform 0.5s;
@@ -89,7 +115,6 @@ export default class ReportersList extends Vue {
 
       &:hover {
         filter: drop-shadow(2px 2px 4px #00000062);
-        font-weight: bold;
       }
     }
   }

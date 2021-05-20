@@ -13,14 +13,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue, Watch, PropSync } from 'nuxt-property-decorator';
 import { timersStore } from '@/store';
 
 @Component
 export default class Timer extends Vue {
-  starting: boolean = false;
   timerSec: number = 0;
   intervalId: any = null;
+  starting: boolean = false;
+
+  @PropSync('currentReporterIndex', { required: true })
+  reporterIndex!: number;
 
   get displayTime(): string {
     const min = Math.floor(this.timerSec / 60);
@@ -39,6 +42,18 @@ export default class Timer extends Vue {
 
   get toggleStartText(): string {
     return this.starting ? '停止' : '開始';
+  }
+
+  @Watch('timerSec')
+  incrementReporterIndex(val: number) {
+    if(val === 0) {
+      this.reporterIndex++;
+    }
+  }
+
+  @Watch('starting')
+  setStarting(val: boolean) {
+    timersStore.setStart(val);
   }
 
   @Watch('finished')
@@ -67,7 +82,6 @@ export default class Timer extends Vue {
       currentDate = new Date();
       if(currentDate.getTime() >= endDate.getTime()) {
         clearInterval(this.intervalId);
-        console.log('Finish!');
       }
     }, 1000);
   }
