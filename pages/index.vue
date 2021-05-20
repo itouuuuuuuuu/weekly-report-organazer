@@ -18,6 +18,10 @@
       el-button.start-button(type="primary" round @click="showTimer") タイマーを表示する
     .content(v-else)
       reporters-list(:names="reporterNames")
+      .timer-container
+        p.current-reporter A さんの番です
+        timer
+
 </template>
 
 <script lang="ts">
@@ -27,7 +31,7 @@ import { reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '伊藤,佐藤,田中',
+    reporterStringNames: '伊藤,佐藤,田中,aaa,bbb,ccc,ddd,eee,fff,ggg',
     min: '3',
     sec: ''
   };
@@ -64,7 +68,7 @@ export default class Index extends Vue {
         this.setReporters();
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=400,height=250,scrollbars=yes,resizable=yes');
+          'width=365,height=230,scrollbars=yes,resizable=yes');
       }
     });
   }
@@ -120,11 +124,21 @@ export default class Index extends Vue {
   }
 
   .content {
+    display: flex;
 
     .reporters-list {
-      min-width: 120px;
+      min-width: 95px;
       max-width: 200px;
       width: 15%;
+    }
+
+    .timer-container {
+      margin: 0 auto;
+
+      .current-reporter {
+        text-align: center;
+        margin: 15px 0 10px;
+      }
     }
   }
 

@@ -34,6 +34,7 @@ export default class ReportersList extends Vue {
   color: #333;
   height: 100vh;
   overflow: scroll;
+  color: #555;
 
   .flip-list-move {
     transition: transform 0.5s;
@@ -53,7 +54,6 @@ export default class ReportersList extends Vue {
       text-align: center;
       font-size: 14px;
       padding-right: 5px;
-      color: #555;
     }
 
     i {
@@ -75,12 +75,19 @@ export default class ReportersList extends Vue {
     height: 100%;
 
     li {
-      margin: 0 5px 3px;
+      border: 1px solid #f3f3f3;
+      margin: 0 5px 5px;
       font-size: 13px;
       padding: 5px 7px;
       border-radius: 4px;
       background-color: #fff;
-      filter: drop-shadow(3px 3px 5px #0000002c);
+      filter: drop-shadow(2px 2px 4px #00000023);
+      cursor: pointer;
+
+      &:hover {
+        filter: drop-shadow(2px 2px 4px #00000062);
+        font-weight: bold;
+      }
     }
   }
 }
