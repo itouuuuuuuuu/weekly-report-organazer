@@ -40,6 +40,7 @@ export default {
     '@/plugins/element-ui',
     '@/plugins/lodash.js',
     '@/plugins/utils',
+    '@/plugins/vue-scrollto',
     { src: "@/plugins/persistedstate.js", ssr: false }
   ],
 
