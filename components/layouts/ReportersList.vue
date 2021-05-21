@@ -2,12 +2,14 @@
 .reporters-list
   .header
     h2.title 報告者
-    i.el-icon-refresh(:class="{ disabled: starting }" @click="shuffle")
+    div(:class="{ disabled: starting }")
+      i.el-icon-refresh(@click="shuffle")
   .list
-    transition-group(name="flip-list" tag="ul")
-      li(v-for="(name, index) in displayNames" :key="name"
-        :class="{ disabled: starting, 'is-actice': isCurrentReporter(index) }"
-        @click="setReporterIndex(index)") {{ name }}
+    div(:class="{ disabled: starting }")
+      transition-group(name="flip-list" tag="ul")
+        li(v-for="(name, index) in displayNames" :key="name"
+          :class="{ 'is-actice': isCurrentReporter(index) }"
+          @click="setReporterIndex(index)") {{ name }}
 </template>
 
 <script lang="ts">
@@ -56,9 +58,12 @@ export default class ReportersList extends Vue {
   color: #555;
 
   .disabled {
-    pointer-events: none;
-    cursor: no-drop !important;
-    opacity: 0.7;
+    cursor: not-allowed;
+
+    > * {
+      pointer-events: none;
+      opacity: 0.7;
+    }
   }
 
   .is-actice {

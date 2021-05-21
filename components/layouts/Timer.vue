@@ -3,11 +3,11 @@
   .display(:class="{ finished: finished }") {{ displayTime }}
   .button-panel
     .row
-      el-button.min-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(600)") 10分
-      el-button.min-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(60)") 1分
+      el-button.min-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(600)") ＋10分
+      el-button.min-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(60)") ＋1分
     .row
-      el-button.sec-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(10)") 10秒
-      el-button.sec-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(1)") 1秒
+      el-button.sec-10(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(10)") ＋10秒
+      el-button.sec-1(type="primary" size="mini" plain round :disabled="starting" @click="addSecToTimer(1)") ＋1秒
     .row
       el-button.reset(type="danger" plain round :disabled="starting" @click="reset") リセット
     .row
@@ -80,14 +80,9 @@ export default class Timer extends Vue {
 
     let currentDate = new Date();
     const endDate = new Date(currentDate.getTime() + this.timerSec * 1000);
-    // console.log(`endDate: ${endDate}`);
     this.intervalId = setInterval(function() {
-      that.timerSec--;
+      if(that.timerSec >= 0) that.timerSec--;
       currentDate = new Date();
-      // console.log(`currentDate.getTime: ${currentDate.getTime()}`);
-      // console.log(`endDate.getTime: ${endDate.getTime()}`);
-      // console.log(`currentDate.getTime() >= endDate.getTime(): ${currentDate.getTime() >= endDate.getTime()}`);
-      // console.log('-------------');
       if(currentDate.getTime() >= endDate.getTime()) {
         clearInterval(that.intervalId);
       }

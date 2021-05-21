@@ -16,7 +16,9 @@
       p.description ボタンを押してタイマーを表示します。
       p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
       el-button.start-button(type="primary" round @click="showTimer" :disabled="hasNoTime") タイマーを表示する
-      a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank") {{ appVersion }}
+      a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank")
+        span {{ appVersion }}
+        img(src="@/assets/images/github_icon.png")
     .content(v-else)
       reporters-list(:names.sync="reporterNames" :current-reporter-index.sync="currentReporterIndex")
       .timer-container
@@ -95,11 +97,16 @@ export default class Index extends Vue {
   showTimer() {
     (this.$refs.form as any).validate((valid: boolean) => {
       if(valid) {
+        if(reportersStore.hasDupReporters) {
+          this.$message.error('名前に重複があります');
+          return;
+        }
         timersStore.setInitialTimerSec(this.form);
+        timersStore.setStart(false);
         this.setReporters();
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=270,height=330,scrollbars=yes,resizable=yes');
+          'width=270,height=310,scrollbars=yes,resizable=yes');
       }
     });
   }
@@ -167,10 +174,18 @@ export default class Index extends Vue {
     }
 
     .version {
-      display: block;
+      display: flex;
+      align-items: center;
       margin-top: 40px;
-      color: #575757;
-      font-size: 12px;
+      color: #616161;
+      font-size: 13px;
+      height: 20px;
+
+      img {
+        height: 14px;
+        margin-left: 5px;
+        padding-bottom: 1px;
+      }
     }
   }
 
