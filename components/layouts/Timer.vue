@@ -70,6 +70,7 @@ export default class Timer extends Vue {
   }
 
   toggleStart() {
+    const that = this;
     this.starting = !this.starting;
 
     if(!this.starting) {
@@ -79,11 +80,16 @@ export default class Timer extends Vue {
 
     let currentDate = new Date();
     const endDate = new Date(currentDate.getTime() + this.timerSec * 1000);
-    this.intervalId = setInterval(() => {
-      this.timerSec--;
+    // console.log(`endDate: ${endDate}`);
+    this.intervalId = setInterval(function() {
+      that.timerSec--;
       currentDate = new Date();
+      // console.log(`currentDate.getTime: ${currentDate.getTime()}`);
+      // console.log(`endDate.getTime: ${endDate.getTime()}`);
+      // console.log(`currentDate.getTime() >= endDate.getTime(): ${currentDate.getTime() >= endDate.getTime()}`);
+      // console.log('-------------');
       if(currentDate.getTime() >= endDate.getTime()) {
-        clearInterval(this.intervalId);
+        clearInterval(that.intervalId);
       }
     }, 1000);
   }
