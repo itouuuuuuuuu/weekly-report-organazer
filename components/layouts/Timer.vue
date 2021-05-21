@@ -28,9 +28,11 @@ export default class Timer extends Vue {
   reporterIndex!: number;
 
   get displayTime(): string {
-    const min = Math.floor(this.timerSec / 60);
+    let min = String(Math.floor(this.timerSec / 60));
     let sec = String(this.timerSec % 60);
     if(sec.length === 1) sec = `0${sec}`;
+    if(min === '-1') min = '0';
+    if(sec === '-1') sec = '00';
     return `${min}:${sec}`;
   }
 
