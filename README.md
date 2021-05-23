@@ -17,3 +17,7 @@ $ npm run generate
 # generate static project for production
 $ npm run generate:production
 ```
+
+## URL
+
+* https://weekly-report-organazer.itou9.net/
