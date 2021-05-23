@@ -104,9 +104,12 @@ export default class Index extends Vue {
         timersStore.setInitialTimerSec(this.form);
         timersStore.setStart(false);
         this.setReporters();
+        const dx = screen.width;
+        const wx = 270;
+        const wy = 310;
         window.open(`${this.rootPath}?subwindow=true`,
           'WeeklyReportOrganazer',
-          'width=270,height=310,scrollbars=yes,resizable=yes');
+          `left=${dx - wx},width=${wx},height=${wy},scrollbars=yes,resizable=yes`);
       }
     });
   }
