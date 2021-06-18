@@ -81,11 +81,6 @@ export default class Index extends Vue {
     return this.form.reporterStringNames.split(',');
   }
 
-  get hasReporters(): boolean {
-    if(reportersStore?.hasReporters === undefined || reportersStore.hasReporters === null) return false;
-    return reportersStore.hasReporters;
-  }
-
   get currentReporterName(): String {
     return this.reporterNames[this.currentReporterIndex];
   }
@@ -122,20 +117,6 @@ export default class Index extends Vue {
   setReporterNames(val: Array<String>) {
     if(val.length > 0) {
       this.reporterNames = val;
-    }
-  }
-
-  @Watch('starting')
-  test(val: boolean) {
-    console.log(val);
-  }
-
-  @Watch('hasReporters')
-  setNamesToForm(val: boolean) {
-    if(val) {
-      this.form.reporterStringNames = reportersStore.reporterStringNames;
-    } else {
-      this.$message.error('入力項目に誤りがあります');
     }
   }
 }

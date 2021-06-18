@@ -9,10 +9,6 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 export default class Reporters extends VuexModule {
   private names: Array<String> = [];
 
-  public get hasReporters(): boolean {
-    return this.names.length > 0;
-  }
-
   public get hasDupReporters(): boolean {
     const set = new Set(this.names);
     return set.size != this.names.length;

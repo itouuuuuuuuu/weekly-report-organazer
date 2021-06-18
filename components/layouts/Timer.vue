@@ -37,7 +37,7 @@ export default class Timer extends Vue {
   }
 
   get finished(): boolean {
-    return this.timerSec === 0;
+    return this.timerSec <= 0;
   }
 
   get toggleStartIcon(): string {
