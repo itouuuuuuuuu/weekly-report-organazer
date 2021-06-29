@@ -41,6 +41,7 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/utils',
     '@/plugins/vue-scrollto',
+    '@/plugins/vue-draggable',
     { src: "@/plugins/persistedstate.js", ssr: false }
   ],
 

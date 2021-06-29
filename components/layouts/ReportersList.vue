@@ -6,10 +6,11 @@
       i.el-icon-refresh(@click="shuffle")
   .list
     div(:class="{ disabled: starting }")
-      transition-group(name="flip-list" tag="ul")
-        li(v-for="(name, index) in displayNames" :key="name"
-          :class="{ 'is-actice': isCurrentReporter(index) }"
-          @click="setReporterIndex(index)") {{ name }}
+      draggable(v-model="displayNames" :options="{ animation: 100 }")
+        transition-group(name="flip-list" tag="ul")
+          li(v-for="(name, index) in displayNames" :key="name"
+            :class="{ 'is-actice': isCurrentReporter(index) }"
+            @click="setReporterIndex(index)") {{ name }}
 </template>
 
 <script lang="ts">
