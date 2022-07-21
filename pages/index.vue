@@ -1,29 +1,29 @@
 <template lang="pug">
-  .container
-    .initial(v-if="!isSubWindow")
-      main-header
-      el-form(label-position="top" ref="form" :model="form" :rules="rules")
-        el-form-item(label="報告者一覧（カンマ区切り）" prop="reporterStringNames")
-          el-input(v-model="form.reporterStringNames" size="small" @blur="setReporters" placeholder="伊藤,佐藤,田中")
-        el-form-item.required(label="初期設定時間")
-          .timer-setting
-            el-form-item(prop="min")
-              el-input-number(v-model="form.min" controls-position="right" size="small" :min="0" :max="59")
-            span.unit 分
-            el-form-item(prop="sec")
-              el-input-number(v-model="form.sec" controls-position="right" size="small" :min="0" :max="59")
-            span.unit 秒
-      p.description ボタンを押してタイマーを表示します。
-      p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
-      el-button.start-button(type="primary" round @click="showTimer" :disabled="hasNoTime") タイマーを表示する
-      a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank")
-        span {{ appVersion }}
-        img(src="@/assets/images/github_icon.png")
-    .content(v-else)
-      reporters-list(:names.sync="reporterNames" :current-reporter-index.sync="currentReporterIndex")
-      .timer-container
-        p.current-reporter(v-html="displayMessage")
-        timer(:current-reporter-index.sync="currentReporterIndex")
+.container
+  .initial(v-if="!isSubWindow")
+    main-header
+    el-form(label-position="top" ref="form" :model="form" :rules="rules")
+      el-form-item(label="報告者一覧（カンマ区切り）" prop="reporterStringNames")
+        el-input(v-model="form.reporterStringNames" size="small" @blur="setReporters" placeholder="伊藤,佐藤,田中")
+      el-form-item.required(label="初期設定時間")
+        .timer-setting
+          el-form-item(prop="min")
+            el-input-number(v-model="form.min" controls-position="right" size="small" :min="0" :max="59")
+          span.unit 分
+          el-form-item(prop="sec")
+            el-input-number(v-model="form.sec" controls-position="right" size="small" :min="0" :max="59")
+          span.unit 秒
+    p.description ボタンを押してタイマーを表示します。
+    p.note * ブラウザをフルスクリーン表示している場合は、適切なサイズで表示されない場合があります。
+    el-button.start-button(type="primary" round @click="showTimer" :disabled="hasNoTime") タイマーを表示する
+    a.version(href="https://github.com/itouuuuuuuuu/weekly-report-organazer" target="_blank")
+      span {{ appVersion }}
+      img(src="@/assets/images/github_icon.png")
+  .content(v-else)
+    reporters-list(:names.sync="reporterNames" :current-reporter-index.sync="currentReporterIndex")
+    .timer-container
+      p.current-reporter(v-html="displayMessage")
+      timer(:current-reporter-index.sync="currentReporterIndex")
 </template>
 
 <script lang="ts">
@@ -33,7 +33,7 @@ import { timersStore, reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '高橋,平川,武田,井手,笹木,森田,古澤,田村,光吉,金谷,伊藤,下田,新井',
+    reporterStringNames: '',
     min: 3,
     sec: 0
   };
@@ -46,6 +46,10 @@ export default class Index extends Vue {
 
   currentReporterIndex: number = 0;
   reporterNames: Array<String> = [];
+
+  get reporterNamesFromJson(): Array<String> {
+    return require('~/assets/json/reporters.json');
+  }
 
   get rootPath(): String {
     return process.env.ROOT_PATH || '';
@@ -87,6 +91,10 @@ export default class Index extends Vue {
 
   get storedReporterNames() {
     return reportersStore.reporterNames;
+  }
+
+  mounted() {
+    this.form.reporterStringNames = this.reporterNamesFromJson.join(',');
   }
 
   showTimer() {

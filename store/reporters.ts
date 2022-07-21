@@ -11,7 +11,7 @@ export default class Reporters extends VuexModule {
 
   public get hasDupReporters(): boolean {
     const set = new Set(this.names);
-    return set.size != this.names.length;
+    return set.size !== this.names.length;
   }
 
   public get reporterStringNames(): String {
