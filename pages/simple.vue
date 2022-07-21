@@ -95,7 +95,7 @@ export default class Index extends Vue {
     const dx = screen.width;
     const wx = 270;
     const wy = 250;
-    window.open(`${this.rootPath}/simple?subwindow=true`,
+    window.open(`${this.rootPath}simple?subwindow=true`,
       'WeeklyReportOrganazer',
       `left=${dx - wx},width=${wx},height=${wy},scrollbars=yes,resizable=yes`);
   }
