@@ -33,7 +33,7 @@ import { timersStore, reportersStore } from '@/store';
 @Component
 export default class Index extends Vue {
   form: any = {
-    reporterStringNames: '高橋,平川,武田,井手,笹木,森田,古澤,田村,光吉,金谷,伊藤',
+    reporterStringNames: '高橋,平川,武田,井手,笹木,森田,古澤,田村,光吉,金谷,伊藤,下田,新井',
     min: 3,
     sec: 0
   };
